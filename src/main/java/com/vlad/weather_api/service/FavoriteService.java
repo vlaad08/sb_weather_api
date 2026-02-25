@@ -1,8 +1,8 @@
 package com.vlad.weather_api.service;
 
 import org.springframework.stereotype.Service;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,13 +42,18 @@ public class FavoriteService {
         }
     }
 
-    private Map<Integer, String> readFromFile(){
-        File file = new File(PATH);
+    private Map<Integer, String> readFromFile() throws Exception {
+        try{
+            File file = new File(PATH);
 
-        return objectMapper.readValue(
-                file,
-                new TypeReference<LinkedHashMap<Integer, String>>() {}
-        );
+            return objectMapper.readValue(
+                    file,
+                    new TypeReference<LinkedHashMap<Integer, String>>() {}
+            );
+        }
+        catch (Exception e){
+            throw new Exception("File could not be read");
+        }
     }
 
     private void writeToFile(Map<Integer, String> favorites) throws IOException {
